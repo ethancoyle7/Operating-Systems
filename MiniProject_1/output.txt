@@ -1,0 +1,3 @@
+From process 0: ABCDE
+From process 1: KLMNA
+From process 2: GHIJK
