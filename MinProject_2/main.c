@@ -37,11 +37,9 @@ void *pThreadFunction(void *p) {
   }
   printf("TID is : %ld\n", tid);
   // this is one of the two either the one running now or the commented out
-  // section
-  // what is the ans suppose to look like? no clue lol ill ask tomorrow after
-  // database
+  
 
-  for (int i = (tid * 2000); i < (tid + 1) * 2000; i++) {
+  for (int i = (tid * 2000); i < ((tid * 2000)+2000); i++) {
     // for (int i = tid * 2000; i > (tid * 2000 - 1); i--)
     // {
     TOTAL = TOTAL + array[i];
