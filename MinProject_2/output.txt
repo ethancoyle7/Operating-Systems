@@ -1,0 +1,27 @@
+The Sums for each are shown below showing w/out
+semaphores, with semaphores and mutex semaphore
+-------------------------------------------------
+
+Thread 1: Sum is 250573 without using a semaphore
+Thread 1: Sum is 250573 using a semaphore
+Thread 1: Sum is 250573 using a mutex
+Thread 2: Sum is 253452 without using a semaphore
+Thread 2: Sum is 253452 using a semaphore
+Thread 2: Sum is 253452 using a mutex
+Thread 3: Sum is 256588 without using a semaphore
+Thread 3: Sum is 256588 using a semaphore
+Thread 3: Sum is 256588 using a mutex
+Thread 4: Sum is 259724 without using a semaphore
+Thread 4: Sum is 259724 using a semaphore
+Thread 4: Sum is 259724 using a mutex
+Thread 5: Sum is 257206 without using a semaphore
+Thread 5: Sum is 257206 using a semaphore
+Thread 5: Sum is 257206 using a mutex
+
+The Totals for all elements of the arrays are shown below
+using mutex, with semaphores, and without the semaphores   
+-----------------------------------------------------------
+
+The total of all elements in the array is: 1277543
+The total of all elements in the array using a semaphore is: 1277543
+The total of all elements in the array using a mutex is: 1277543
