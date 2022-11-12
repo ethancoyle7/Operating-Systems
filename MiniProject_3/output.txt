@@ -1,0 +1,13 @@
+ sh -c make -s
+ ./main
+------------------------------------------------------------------
+Authors   : Ethan Coyle, Jon Hogan, Dymon Brown                   
+Teacher   : Dr. Passos                                            
+Class     : Intro to Operating Systems                            
+Assignment: Mini Project 3 – Virtual memory                       
+------------------------------------------------------------------
+
+After Analysing the infile spice.txt below are the gathered statistics :
+
+The Total Amount Of Pages That Were Used Was : 64 Pages 
+The Average Number Of Accesses               : 15625 Accesses
