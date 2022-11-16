@@ -1,0 +1,4 @@
+Total number of different segments: 157
+Total number of different pages: 132
+Total number of ALL segments: 1000001
+Total number of ALL pages: 1000001
