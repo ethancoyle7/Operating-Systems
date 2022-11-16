@@ -1,3 +1,10 @@
+//-------------------------------------------------
+// Authors   : Ethan Coyle, Jon Hogan, Dymon Brown
+// Teacher   : Dr. Passos
+// Class     : Intro to Operating Systems
+// Assignment: Mini Project 3 – Virtual memory
+//------------------------------------------------
+
 #include <fstream>
 #include <iostream>
 #include<vector>
@@ -46,6 +53,13 @@ int main()
     TotalPages++;
     TotalSegments++;
   }}
+  cout << "------------------------------------------------------------------\n";
+  cout << "Authors   : Ethan Coyle, Jon Hogan, Dymon Brown                   \n";
+  cout << "Teacher   : Dr. Passos                                            \n";
+  cout << "Class     : Intro to Operating Systems                            \n";
+  cout << "Assignment: Mini Project 3 – Virtual memory                       \n";
+  cout << "------------------------------------------------------------------\n\n";
+  cout << "After Analysing the infile spice.txt below are the gathered statistics :\n\n";
     // Print out analyzis for pages and segments accumulated above
   cout << "Total number of different segments: " << TotalDifferentSegments << endl;
   cout << "Total number of different pages: " << TotalDifferentPages << endl;
