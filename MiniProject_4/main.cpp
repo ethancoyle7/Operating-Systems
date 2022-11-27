@@ -193,4 +193,3 @@ int SecondChanceAlgorithm(vector<int> reference_string, int Frames,vector<pair<i
     }
    return Second_Chance_Page_Faults;//return the number of page faults
 }
-//hello! what you think? i practically have comment on each line lol
