@@ -1,0 +1,10 @@
+The size of the reference string is: 10000
+The size of the reference string fifo is: 10000
+------------------------------------------------------------
+ Authors    : Ethan Coyle, Jonathan Hogan and Dymon Browne
+ Teacher    : Dr. Passos
+ Class      : Intro to Operating Systems
+ Assignment : Mini Project 4
+------------------------------------------------------------
+
+Total Number of Page Faults for the SCR  is : 9848Total Number of Page Faults for the FIFO is : 19
