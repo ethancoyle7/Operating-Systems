@@ -40,7 +40,6 @@ using namespace std;
 bool SecondChanceNeedUpdating(int page, int Frames,vector<pair<int,bool>> &frames);
 int SecondChanceReplace(int page, int Frames,vector<pair<int,bool>> &frames,int page_pointer);
 int SecondChanceAlgorithm(vector<int> reference_string, int Frames,vector<pair<int,bool>> frames);
-int FIFOpageFaults(vector<int> reference_string_fifo, int n, int Frames);
 
 
 
@@ -49,6 +48,7 @@ int FIFOpageFaults(vector<int> reference_string_fifo, int n, int Frames);
 int main()
 {
     int i,Second_Chance_Page_Faults=0;//variable to store the number of page faults and counter variable
+    int q, r, s, PagePresent = 0; // iterint over and finding page faults with fifo checking for present pages all set to 0
     //no of frames
     int Frames=10;// we got 10 frames
     int TotPages=10000;// total pages we are running on is 10000
@@ -57,11 +57,13 @@ int main()
     map<unsigned int, int> Pages;// map to store the pages
     //create reference string array
     vector<int> reference_string(TotPages); 
-    vector<int> reference_string_fifo(TotPages); 
 
-    int FIFOPageFaults= 0;
-    int FIFOOldest;
-    vector<int> FIFO;
+    vector <int> FifoPages;// vector to store the pages for fifo
+    vector <int> hit(TotPages);//keeping track of how many page hits for fifo calculating page faults
+    vector<vector<int>> FifoPageFrame(Frames);//vector to store the frames
+    for(q = 0; q < Frames; q++){    //iterating through the frames
+        FifoPageFrame[q] = vector <int>(TotPages,-1);   //filling the frames with -1 for referencing bit
+    }
 
     //generate a random number and generate it from 0 %4096
     srand(time(0));
@@ -70,8 +72,7 @@ int main()
         int randNum = rand() % 4096;//generate a random number
         unsigned int pageNum =  (randNum >> 6);//shift the random number by 6 bits
         reference_string[i] = pageNum;//store the page number in the reference string
-        reference_string_fifo[i] = pageNum;//store the page number in the reference string
-        
+        FifoPages.push_back(pageNum);//store the page number in the reference string
         Pages[pageNum] += 1;
     }
     
@@ -86,25 +87,67 @@ int main()
     //print out the size of the reference string
     cout<<"The size of the reference string is: "<<reference_string.size()<<endl;
     Second_Chance_Page_Faults = SecondChanceAlgorithm(reference_string, Frames,frames);// the total ammount of page faults
-    int n = sizeof(reference_string_fifo);
-    //print out the size of the reference string fifo
-    cout<<"The size of the reference string fifo is: "<<reference_string_fifo.size()<<endl;
-    int pageFaults = FIFOpageFaults(reference_string_fifo, n, Frames);
-    //are passed back to the variable Second_Chance_Page_Faults and then we display to the scrren and user
+      //are passed back to the variable Second_Chance_Page_Faults and then we display to the scrren and user
     cout<<"------------------------------------------------------------"<<endl;
     cout<<" Authors    : Ethan Coyle, Jonathan Hogan and Dymon Browne"<<endl;
     cout<<" Teacher    : Dr. Passos"<<endl;
     cout<<" Class      : Intro to Operating Systems"<<endl;
     cout<<" Assignment : Mini Project 4"<<endl;
     cout<<"------------------------------------------------------------"<<endl;
-    cout<<"\nTotal Number of Page Faults for the SCR  is : "<<Second_Chance_Page_Faults;
-    cout << "Total Number of Page Faults for the FIFO is : "<<pageFaults;
+    cout<<"\nThe Total Number of SCR  Page Faults were: "<<Second_Chance_Page_Faults<<endl;
+  //now for the fifo page replacement
+    map <int, int> FifoPageMap; //map to store the pages   
+    
+    for(q = 0; q < TotPages ; q++){
+        vector<pair<int,int>> c;//vector to store the page number and the index of the page
+        
+        for(auto x: FifoPageMap)//iterating through the map and page index
+        {
+            c.push_back({x.second, x.first});//pushing the page number and the index of the page
+        }
+
+        sort(c.begin(),c.end());//sorting the vector
+        bool hasCompleted = false;//flag to check if the page has been completed or not
+        for(r = 0;r < Frames; r++){//iterating through the frames
+            if(FifoPageFrame[r][q] == FifoPages[q])//check to see if page is already present in pages
+            {
+                PagePresent++;
+                hasCompleted = true;
+                break;
+            }
+            if(FifoPageFrame[r][q] == -1)//if the page is empty
+            {
+                for(s = q ; s < TotPages; s++)//iterate through the pages
+                    FifoPageFrame[r][s] = FifoPages[q];//fill the page with the page number
+                    
+                FifoPageMap[FifoPages[q]]++;//increment the page number
+                hasCompleted = true;//set the flag to true
+                break;//break out of the loop
+            }
+        }
+        if(r == Frames || hasCompleted == false){//if the page is not present in the frames
+            for(r = 0;r < Frames; r++){//iterate through the frames
+                if(FifoPageFrame[r][q] == c[c.size() - 1].second){
+                    FifoPageMap.erase(FifoPageFrame[r][q]);//erase the page from the map
+                    
+                    for(s = q; s < TotPages ; s++)
+                        FifoPageFrame[r][s]= FifoPages[q];//fill the page with the page number
+                        
+                    FifoPageMap[FifoPages[q]]++;//increment the page number
+                    break;
+                }
+            }
+        }
+        for(auto x:FifoPageMap){//iterate through the map
+            if(x.first != FifoPages[q]){//if the page is not present in the map
+                FifoPageMap[x.first]++;//increment the page number
+            }
+        }
+    }
+        cout << "The Total Number of Fifo Page Faults were: " << TotPages - PagePresent << endl;//print the page fault
     return 0;//end the file
 }
 //write function for FIFO page replacement algorithm
-
-
-
 // Function to check if we need to update 
 bool SecondChanceNeedUpdating(int page, int Frames,vector<pair<int,bool>> &frames)
 {//Check if the page is already present in the frames vector
@@ -152,54 +195,4 @@ int SecondChanceAlgorithm(vector<int> reference_string, int Frames,vector<pair<i
        } 
     }
    return Second_Chance_Page_Faults;//return the number of page faults
-}
-int FIFOpageFaults(vector<int> reference_string_fifo, int n, int Frames)
-{
-    //find all of the page faults
-    int pageFaults = 0;
-    //create a set to store the pages
-    set<int> s;
-    //create a queue to store the pages
-    queue<int> indexes;
-    //loop through the reference string
-
-    for (int i=0; i<n; i++)
-    {
-        //if the set size is less than the number of frames
-        if (s.size() < Frames)
-        {
-            //if the page is not in the set
-            if (s.find(reference_string_fifo[i])==s.end())
-            {
-                //insert the page into the set
-                s.insert(reference_string_fifo[i]);
-                //insert the page into the queue
-                indexes.push(reference_string_fifo[i]);
-                //increment the page faults
-                pageFaults++;
-            }
-        }
-        //if the set size is equal to the number of frames
-        else
-        {
-            //if the page is not in the set
-            if (s.find(reference_string_fifo[i]) == s.end())
-            {
-                //get the first page in the queue
-                int val = indexes.front();
-                //remove the first page from the queue
-                indexes.pop();
-                //remove the first page from the set
-                s.erase(val);
-                //insert the page into the set
-                s.insert(reference_string_fifo[i]);
-                //insert the page into the queue
-                indexes.push(reference_string_fifo[i]);
-                //increment the page faults
-                pageFaults++;
-            }
-        }
-    }
-    //return the number of page faults
-    return pageFaults;
 }
