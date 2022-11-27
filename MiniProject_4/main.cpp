@@ -22,15 +22,11 @@
 
 #include<iostream>
 #include<vector>
-#include<iomanip>
 #include <algorithm>
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
 #include <vector>
-#include <iomanip>
-#include <sstream>
-#include <fstream>
 #include <map>
 #include <set>
 #include<bits/stdc++.h>
@@ -85,16 +81,16 @@ int main()
       frames[i].second = false;
     }
     //print out the size of the reference string
-    cout<<"The size of the reference string is: "<<reference_string.size()<<endl;
-    Second_Chance_Page_Faults = SecondChanceAlgorithm(reference_string, Frames,frames);// the total ammount of page faults
-      //are passed back to the variable Second_Chance_Page_Faults and then we display to the scrren and user
-    cout<<"------------------------------------------------------------"<<endl;
-    cout<<" Authors    : Ethan Coyle, Jonathan Hogan and Dymon Browne"<<endl;
-    cout<<" Teacher    : Dr. Passos"<<endl;
-    cout<<" Class      : Intro to Operating Systems"<<endl;
-    cout<<" Assignment : Mini Project 4"<<endl;
-    cout<<"------------------------------------------------------------"<<endl;
-    cout<<"\nThe Total Number of SCR  Page Faults were: "<<Second_Chance_Page_Faults<<endl;
+    cout << "The size of the reference string is: " << reference_string.size() << endl;
+    Second_Chance_Page_Faults = SecondChanceAlgorithm(reference_string, Frames,frames);// the total amount of page faults
+      //are passed back to the variable Second_Chance_Page_Faults and then we display to the screen and user
+    cout << "------------------------------------------------------------" << endl;
+    cout << " Authors    : Ethan Coyle, Jonathan Hogan and Dymon Browne" << endl;
+    cout << " Teacher    : Dr. Passos" << endl;
+    cout << " Class      : Intro to Operating Systems" << endl;
+    cout << " Assignment : Mini Project 4" << endl;
+    cout << "------------------------------------------------------------" << endl;
+    cout << "\nThe Total Number of SCR  Page Faults were: " << Second_Chance_Page_Faults << endl;
   //now for the fifo page replacement
     map <int, int> FifoPageMap; //map to store the pages   
     
@@ -154,13 +150,14 @@ bool SecondChanceNeedUpdating(int page, int Frames,vector<pair<int,bool>> &frame
     for(int i = 0 ; i < Frames; i++)
     {
         if(frames[i].first == page)        //the page already is present
-        {
+          {
             frames[i].second = true;        //set the reference bit to 1
             return false; //we dont need to update the page
+          }
+        return true ; // Need for Page replacement due to not found in frames
     }
-    return true ; // Need for Page replacement due to not found in frames
-}}
-// function to find the page that need be replaced  and then replacing it with new pagee, the updated loacation
+    }
+// function to find the page that need be replaced  and then replacing it with new page, the updated location
 // if then passed back to be used as the new starting point for the next search
 int SecondChanceReplace(int page, int Frames,vector<pair<int,bool>> &frames,int page_pointer)
 {
@@ -176,7 +173,7 @@ int SecondChanceReplace(int page, int Frames,vector<pair<int,bool>> &frames,int 
        frames[page_pointer].second = 0;//second chance
        page_pointer = (page_pointer + 1)% Frames;//increment the page_pointer
     }
-    return page_pointer;//return the updated page_pointer of location from where new search is staarting
+    return page_pointer;//return the updated page_pointer of location from where new search is starting
 }
 //function that performs the Second Chance Algorithm and returns the number of page faults
 //parameters are  reference string, number of frames and vector bool frames
@@ -196,3 +193,4 @@ int SecondChanceAlgorithm(vector<int> reference_string, int Frames,vector<pair<i
     }
    return Second_Chance_Page_Faults;//return the number of page faults
 }
+//hello! what you think? i practically have comment on each line lol
